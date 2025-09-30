@@ -1,0 +1,42 @@
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; line-height: 1.6; }
+
+/* HEADER */
+header {
+  background: #f69339;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  align-items: center;
+}
+header .logo { font-size: 22px; font-weight: bold; }
+nav ul { display: flex; gap: 20px; list-style: none; }
+nav a { text-decoration: none; color: #000; font-weight: bold; }
+
+/* HERO */
+.hero {
+  background: url("img/hero.jpg") no-repeat center center/cover;
+  color: #000000;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hero h1 { font-size: 36px; }
+.hero .btn {
+  background: #000;
+  color: #fff;
+  padding: 10px 20px;
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+}
+
+/* PRESENTACION */
+.presentacion { padding: 50px 20px; text-align: center; }
+.presentacion .cards { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+.card { width: 30%; border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
+.card img { width: 100%; border-radius: 8px; }
