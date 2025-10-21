@@ -39,13 +39,31 @@ nav a {
 
 /* HERO */
 .hero {
-  background: url("img/hero.jpg") no-repeat center center/cover;
   color: #000000;
   height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: relative;
+  overflow: hidden; 
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: url("IMG/Img_1.jpg") no-repeat center center/cover;
+  filter: blur(5px); 
+  z-index: 1;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
 }
 
 .hero h1 {
@@ -83,6 +101,9 @@ nav a {
 
 .card img {
   width: 100%;
+  height: 300px; 
+  object-fit: cover; 
+  object-position: center; 
   border-radius: 8px;
 }
 
@@ -109,6 +130,9 @@ nav a {
 
 .item img {
   width: 100%;
+  height: 300px; 
+  object-fit: cover; 
+  object-position: center; 
   border-radius: 8px;
 }
 
@@ -132,6 +156,14 @@ nav a {
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
+}
+
+.grid-combos .item img { /* AGREGADO */
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
 }
 
 /* RESERVAS */
