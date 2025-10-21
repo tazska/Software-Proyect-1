@@ -1,3 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Varela+Round&display=swap');
+
+
+.menu button {
+  color: #fff;
+  font-size: 20px;
+}
+
+h3 {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #FFB74D;
+}
+
+h2 {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 40px;
+  color: #FFB74D;
+}
+
+p {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #FFB74D;
+}
+
+.heroP {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: bold;
+  font-size: 30px;
+  color: #1a0f0a;
+}
+
+.varela-round-regular {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.bungee-regular {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* RESET */
 * {
   margin: 0;
@@ -6,13 +56,14 @@
 }
 
 body {
+  background-color: #1a0f0a;
   font-family: Arial, sans-serif;
   line-height: 1.6;
 }
 
 /* HEADER */
 header {
-  background: #f69339;
+  background: #1a0f0a;
   color: #000;
   display: flex;
   justify-content: space-between;
@@ -22,19 +73,28 @@ header {
 
 header .logo {
   font-size: 22px;
-  font-weight: bold;
+  display: flex;
 }
 
 nav ul {
   display: flex;
-  gap: 20px;
+  gap: 50px;
   list-style: none;
 }
 
+nav a:hover {
+  font-size: 30px;
+  color: #FF5722;
+
+}
+
 nav a {
+  font-size: 25px;
   text-decoration: none;
-  color: #000;
-  font-weight: bold;
+  color: #FFB74D;
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* HERO */
@@ -56,7 +116,7 @@ nav a {
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background: url("IMG/Img_1.jpg") no-repeat center center/cover;
+  background: url("IMG/lobby.jpg") no-repeat center center/cover;
   filter: blur(5px); 
   z-index: 1;
 }
@@ -67,16 +127,27 @@ nav a {
 }
 
 .hero h1 {
-  font-size: 36px;
+  font-size: 100px;
+}
+
+.hero .btn:hover{
+  font-size: 35px;
+  color: #FF5722;
+
 }
 
 .hero .btn {
+  font-size: 30px;
+  border-radius: 6px;
   background: #000;
-  color: #fff;
+  color: #FFB74D;
   padding: 10px 20px;
   display: inline-block;
   margin-top: 20px;
   text-decoration: none;
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* PRESENTACION */
@@ -94,7 +165,6 @@ nav a {
 
 .card {
   width: 30%;
-  border: 1px solid #ddd;
   padding: 15px;
   border-radius: 8px;
 }
@@ -111,7 +181,6 @@ nav a {
 .menu {
   padding: 50px 20px;
   text-align: center;
-  background: #fafafa;
 }
 
 .grid-menu {
@@ -121,11 +190,15 @@ nav a {
   margin-top: 20px;
 }
 
+.item:hover {
+  background: #fff;
+
+}
+
 .item {
-  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 15px;
-  background: #fff;
+  
 }
 
 .item img {
@@ -146,6 +219,11 @@ nav a {
 }
 
 /* COMBOS */
+.combos button {
+  color: #fff;
+  font-size: 20px;
+}
+
 .combos {
   padding: 50px 20px;
   text-align: center;
@@ -169,7 +247,6 @@ nav a {
 /* RESERVAS */
 .reservas {
   padding: 50px 20px;
-  background: #fafafa;
   text-align: center;
 }
 
@@ -197,6 +274,7 @@ form button {
 
 /* FOOTER */
 footer {
+  color: #1a0f0a;
   background: #f69339;
   padding: 20px;
   display: flex;
@@ -205,14 +283,52 @@ footer {
 }
 
 footer h3 {
+  color: #1a0f0a;
   margin-bottom: 10px;
 }
 
 footer ul {
+  color: #1a0f0a;
   list-style: none;
 }
 
 footer a {
   text-decoration: none;
-  color: #000;
+  color: #1a0f0a;
 }
+
+.social p {
+  color: #1a0f0a;
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+}
+
+.productos h3 {
+  color: #1a0f0a;
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+}
+
+.productos ul {
+  color: #1a0f0a;
+  font-size: 20px;
+}
+
+.contacto h3 {
+  color: #1a0f0a;
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 30px;
+}
+
+.contacto p {
+  color: #1a0f0a;
+  font-size: 20px;
+}
+
+
