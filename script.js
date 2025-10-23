@@ -1,4 +1,4 @@
-// Script para Papas Locas - Manejo de Reservas
+// Script para Papas Locas - Descarga TXT Local
 
 document.addEventListener('DOMContentLoaded', function() {
   const formReserva = document.getElementById('formReserva');
@@ -29,6 +29,32 @@ document.addEventListener('DOMContentLoaded', function() {
     return codigo;
   }
 
+  // Función para descargar archivo TXT
+  function descargarTXT(contenido, nombreArchivo) {
+    // Crear elemento 'a' temporal
+    const elemento = document.createElement('a');
+    
+    // Crear el archivo como Blob
+    const archivo = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+    
+    // Crear URL del archivo
+    const url = URL.createObjectURL(archivo);
+    
+    // Configurar el elemento 'a'
+    elemento.href = url;
+    elemento.download = nombreArchivo;
+    
+    // Agregar al DOM, hacer clic y remover
+    document.body.appendChild(elemento);
+    elemento.click();
+    
+    // Limpiar
+    setTimeout(() => {
+      document.body.removeChild(elemento);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+
   // Función para mostrar mensajes
   function mostrarMensaje(texto, tipo) {
     mensaje.textContent = texto;
@@ -48,11 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
       mensaje.style.border = '2px solid #66bb6a';
     }
 
-    // Ocultar mensaje después de 5 segundos
+    // Ocultar mensaje después de 8 segundos
     setTimeout(() => {
       mensaje.textContent = '';
       mensaje.style.padding = '0';
-    }, 5000);
+    }, 8000);
   }
 
   // Evento submit del formulario
@@ -192,32 +218,27 @@ document.addEventListener('DOMContentLoaded', function() {
 ╚═══════════════════════════════════════════════════════════╝
 `;
 
-    // Crear el Blob y descargar archivo
-    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    
-    // Nombre del archivo
+    // Nombre del archivo con fecha y código
     const nombreArchivo = `Reserva_PapasLocas_${nombre.replace(/\s+/g, '_')}_${fecha}_${codigoReserva}.txt`;
-    link.download = nombreArchivo;
-    
-    // Simular clic para descargar
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    // Limpiar el URL
-    window.URL.revokeObjectURL(url);
 
-    // Mostrar mensaje de éxito
-    mostrarMensaje(`✅ ¡Reserva confirmada! Tu código es: ${codigoReserva}. Revisa tu carpeta de descargas 📥`, 'exito');
-
-    // Limpiar formulario
-    formReserva.reset();
-
-    // Opcional: Scroll suave al mensaje
-    mensaje.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // DESCARGAR EL ARCHIVO TXT LOCALMENTE
+    try {
+      descargarTXT(contenido, nombreArchivo);
+      
+      // Mostrar mensaje de éxito
+      mostrarMensaje(`✅ ¡Reserva confirmada! Código: ${codigoReserva}. Archivo descargado en tu carpeta de Descargas 📥`, 'exito');
+      
+      // Limpiar formulario
+      formReserva.reset();
+      
+      // Scroll al mensaje
+      mensaje.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
+      console.log('✅ Archivo TXT descargado correctamente');
+    } catch (error) {
+      console.error('Error al descargar archivo:', error);
+      mostrarMensaje('❌ Error al generar el archivo. Por favor intenta nuevamente.', 'error');
+    }
   });
 
   // Validación en tiempo real del celular (solo números)
@@ -275,4 +296,5 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   console.log('🍟 Script de Papas Locas cargado correctamente');
+  console.log('📥 Sistema de descarga TXT local activado');
 });
