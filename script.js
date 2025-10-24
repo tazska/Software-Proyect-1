@@ -1,10 +1,121 @@
+<<<<<<< HEAD
+// Script para Papas Locas - Descarga TXT Local y Carrito de Compras
+=======
 // Script para Papas Locas - Descarga TXT Local
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 document.addEventListener('DOMContentLoaded', function() {
   const formReserva = document.getElementById('formReserva');
   const mensaje = document.getElementById('mensaje');
 
+<<<<<<< HEAD
+  // --- LÓGICA DEL CARRITO DE COMPRAS ---
+  
+  let carrito = []; // Array para almacenar los productos {nombre, precio, cantidad}
+  const cartCount = document.getElementById('cartCount');
+  const cartTotalDisplay = document.getElementById('cartTotal');
+  const btnCheckout = document.getElementById('btnCheckout');
+  const cartIcon = document.getElementById('cartIcon');
+  const cartDropdown = document.getElementById('cartDropdown');
+  
+  // Función para actualizar el contador y el total
+  function actualizarCarritoUI() {
+    let totalItems = 0;
+    let totalPrecio = 0;
+    
+    carrito.forEach(item => {
+        // Asumiendo que item.cantidad y item.precio son números
+        totalItems += item.cantidad; 
+        totalPrecio += item.precio * item.cantidad;
+    });
+
+    cartCount.textContent = totalItems;
+    // Esto es solo para el dropdown en Index.html, el total real se calcula en checkout.html
+    if (cartTotalDisplay) {
+        cartTotalDisplay.textContent = `$${totalPrecio.toFixed(2)}`;
+    }
+  }
+  
+  // Función para agregar un producto al carrito
+  function agregarAlCarrito(nombre, precio) {
+    // Convertir el precio a número entero, ya que los precios en tu HTML son enteros ($40, $60, etc.)
+    const precioNum = parseInt(precio); 
+    
+    const itemExistente = carrito.find(item => item.nombre === nombre);
+    
+    if (itemExistente) {
+      itemExistente.cantidad += 1;
+    } else {
+      carrito.push({ nombre, precio: precioNum, cantidad: 1 });
+    }
+    
+    actualizarCarritoUI();
+    // Reutilizamos tu función de mensaje para notificar la adición
+    mostrarMensaje(`✔️ ${nombre} agregado al carrito!`, 'exito'); 
+  }
+  
+  // Evento para los botones de "Agregar al Carrito"
+  document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+    button.addEventListener('click', function() {
+      const nombre = this.getAttribute('data-nombre');
+      const precio = this.getAttribute('data-precio');
+      agregarAlCarrito(nombre, precio);
+    });
+  });
+
+  // Evento para el ícono del carrito (Muestra/Oculta el total)
+  cartIcon.addEventListener('click', function() {
+    if (cartDropdown) {
+        // Toggle de display entre 'block' y 'none'
+        cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block';
+    }
+  });
+
+
+  // ----------------------------------------------------------------------------------
+  //  MODIFICACIÓN CLAVE: REDIRIGIR AL CHECKOUT EN LUGAR DE MOSTRAR MENSAJE EN INDEX
+  // ----------------------------------------------------------------------------------
+  btnCheckout.addEventListener('click', function() {
+    if (carrito.length === 0) {
+      mostrarMensaje('🛒 El carrito está vacío. Agrega algo delicioso!', 'error');
+      if (cartDropdown) cartDropdown.style.display = 'none';
+      return;
+    }
+    
+    // Opcional: Guardar el celular de reserva si existe un valor para usarlo en el checkout
+    // Esto asume que el input de celular de reserva es el segundo input del formReserva
+    const inputCelular = formReserva.querySelectorAll('input')[1]; 
+    if (inputCelular && inputCelular.value.trim().length > 0) {
+        localStorage.setItem('papasLocasCelular', inputCelular.value.trim());
+    } else {
+        // Si no hay celular, al menos se guarda el carrito.
+        localStorage.removeItem('papasLocasCelular');
+    }
+    
+    // 1. Guardar el carrito en el localStorage para que checkout.html lo lea
+    localStorage.setItem('papasLocasCarrito', JSON.stringify(carrito));
+    
+    // 2. Limpiar el carrito en la memoria local (para que el contador sea 0 al volver)
+    carrito = [];
+    actualizarCarritoUI();
+    
+    // 3. Ocultar el dropdown
+    if (cartDropdown) cartDropdown.style.display = 'none';
+
+    // 4. Redirigir a la página de checkout
+    window.location.href = 'checkout.html';
+  });
+  // ----------------------------------------------------------------------------------
+  
+  // Inicializar UI al cargar
+  actualizarCarritoUI();
+  
+  // --- FIN LÓGICA DEL CARRITO DE COMPRAS ---
+
+  // Función para formatear fecha (continúa tu código de reserva...)
+=======
   // Función para formatear fecha
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
   function formatearFecha(fecha) {
     const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(fecha + 'T00:00:00').toLocaleDateString('es-CO', opciones);
@@ -23,9 +134,15 @@ document.addEventListener('DOMContentLoaded', function() {
   function generarCodigoReserva() {
     const fecha = new Date();
     const codigo = 'PL' + fecha.getFullYear().toString().substr(-2) + 
+<<<<<<< HEAD
+                  (fecha.getMonth() + 1).toString().padStart(2, '0') +
+                  fecha.getDate().toString().padStart(2, '0') +
+                  Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+=======
                    (fecha.getMonth() + 1).toString().padStart(2, '0') +
                    fecha.getDate().toString().padStart(2, '0') +
                    Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
     return codigo;
   }
 
@@ -57,12 +174,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Función para mostrar mensajes
   function mostrarMensaje(texto, tipo) {
+<<<<<<< HEAD
+    // Si el mensaje viene del carrito, no lo ocultamos automáticamente, a menos que sea un error.
+    const duracion = (tipo === 'exito' && texto.includes('agregado al carrito')) ? 3000 : 8000;
+      
+=======
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
     mensaje.textContent = texto;
     mensaje.style.padding = '15px';
     mensaje.style.borderRadius = '8px';
     mensaje.style.marginTop = '20px';
     mensaje.style.fontWeight = '600';
     mensaje.style.textAlign = 'center';
+<<<<<<< HEAD
+    mensaje.style.whiteSpace = 'pre-wrap'; // CLAVE para que los saltos de línea se vean
+=======
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
     
     if (tipo === 'error') {
       mensaje.style.background = '#ffebee';
@@ -74,6 +201,17 @@ document.addEventListener('DOMContentLoaded', function() {
       mensaje.style.border = '2px solid #66bb6a';
     }
 
+<<<<<<< HEAD
+    // Ocultar mensaje después de X segundos
+    setTimeout(() => {
+      mensaje.textContent = '';
+      mensaje.style.padding = '0';
+      mensaje.style.whiteSpace = 'normal';
+    }, duracion);
+  }
+
+  // Evento submit del formulario (Reserva)
+=======
     // Ocultar mensaje después de 8 segundos
     setTimeout(() => {
       mensaje.textContent = '';
@@ -82,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Evento submit del formulario
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
   formReserva.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -126,7 +265,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Crear contenido del archivo TXT
     const contenido = `
 ╔═══════════════════════════════════════════════════════════╗
+<<<<<<< HEAD
+║           PAPAS LOCAS - RESERVA CONFIRMADA                ║
+=======
 ║           PAPAS LOCAS - RESERVA CONFIRMADA                ║
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 ╚═══════════════════════════════════════════════════════════╝
 
 🎉 ¡FELICITACIONES! TU RESERVA HA SIDO CONFIRMADA
@@ -136,29 +279,63 @@ document.addEventListener('DOMContentLoaded', function() {
 📋 INFORMACIÓN DE LA RESERVA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+<<<<<<< HEAD
+    👤 Nombre Completo: ${nombre}
+    📱 Teléfono/WhatsApp: ${celular}
+    📅 Fecha de Reserva: ${formatearFecha(fecha)}
+    👥 Número de Personas: ${personas}
+    🕐 Hora: ${formatearHora(hora)}
+    🔖 Código de Reserva: ${codigoReserva}
+=======
     👤 Nombre Completo: ${nombre}
     📱 Teléfono/WhatsApp: ${celular}
     📅 Fecha de Reserva: ${formatearFecha(fecha)}
     👥 Número de Personas: ${personas}
     🕐 Hora: ${formatearHora(hora)}
     🔖 Código de Reserva: ${codigoReserva}
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📍 UBICACIÓN DEL RESTAURANTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+<<<<<<< HEAD
+    🏠 Dirección: Barrio Centro
+    🌆 Ciudad: Villagarzón - Putumayo
+    
+    🌳 Ambiente: Mesas de madera, troncos, piso de grava
+                Encierro de guadua con árbol en el centro
+=======
     🏠 Dirección: Barrio Centro
     🌆 Ciudad: Villagarzón - Putumayo
     
     🌳 Ambiente: Mesas de madera, troncos, piso de grava
                 Encierro de guadua con árbol en el centro
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📞 INFORMACIÓN DE CONTACTO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+<<<<<<< HEAD
+    ☎️  Teléfono: 312739897
+    ✉️  Email: correo@gmail.com
+    📘 Facebook: /papas.locas.21481
+    📷 Instagram: @papas_locas_villagarzon
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  IMPORTANTE - POR FAVOR LEE CON ATENCIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    ✓ Llegar 10 minutos antes de la hora reservada
+    ✓ Confirmar asistencia 24 horas antes al: 312739897
+    ✓ En caso de cancelación, avisar con anticipación
+    ✓ Guarda este archivo como comprobante de tu reserva
+    ✓ Presenta el código de reserva al llegar: ${codigoReserva}
+=======
     ☎️  Teléfono: 312739897
     ✉️  Email: correo@gmail.com
     📘 Facebook: /papas.locas.21481
@@ -174,12 +351,25 @@ document.addEventListener('DOMContentLoaded', function() {
     ✓ En caso de cancelación, avisar con anticipación
     ✓ Guarda este archivo como comprobante de tu reserva
     ✓ Presenta el código de reserva al llegar: ${codigoReserva}
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🍟 NUESTROS PRODUCTOS MÁS POPULARES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+<<<<<<< HEAD
+    • Papas Locas Clásicas
+    • Hamburguesas Premium
+    • Picadas Tradicionales
+    • Sándwiches Especiales
+    • Pizzas Artesanales
+    
+    🎁 COMBOS ESPECIALES:
+    • Combo Personal - $60
+    • Combo Familiar - $100
+    • Combo Extra - $80
+=======
     • Papas Locas Clásicas
     • Hamburguesas Premium
     • Picadas Tradicionales
@@ -190,21 +380,41 @@ document.addEventListener('DOMContentLoaded', function() {
     • Combo Personal - $60
     • Combo Familiar - $100
     • Combo Extra - $80
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ✨ ¡GRACIAS POR ELEGIR PAPAS LOCAS!
+<<<<<<< HEAD
+   "Crujientes, jugosas y llenas de actitud"
+
+   Te esperamos para que disfrutes de una
+   experiencia gastronómica única en nuestro
+   acogedor ambiente rústico.
+=======
    "Crujientes, jugosas y llenas de actitud"
 
    Te esperamos para que disfrutes de una
    experiencia gastronómica única en nuestro
    acogedor ambiente rústico.
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 📄 DETALLES DEL DOCUMENTO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+<<<<<<< HEAD
+    Reserva generada: ${new Date().toLocaleString('es-CO', {
+      dateStyle: 'full',
+      timeStyle: 'medium'
+    })}
+    
+    Código de reserva: ${codigoReserva}
+    
+    Este documento es un comprobante de tu reserva.
+    Conserva este archivo para referencia futura.
+=======
     Reserva generada: ${new Date().toLocaleString('es-CO', {
       dateStyle: 'full',
       timeStyle: 'medium'
@@ -214,6 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     Este documento es un comprobante de tu reserva.
     Conserva este archivo para referencia futura.
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
 ╚═══════════════════════════════════════════════════════════╝
 `;
@@ -255,8 +466,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Establecer fecha mínima (hoy)
   const inputFecha = formReserva.querySelectorAll('input')[2];
+<<<<<<< HEAD
+  const hoyReserva = new Date().toISOString().split('T')[0];
+  inputFecha.setAttribute('min', hoyReserva);
+=======
   const hoy = new Date().toISOString().split('T')[0];
   inputFecha.setAttribute('min', hoy);
+>>>>>>> a4bdeafaaeef11f2f716530a159e33bfee479834
 
   // Smooth scroll para los enlaces del menú
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
