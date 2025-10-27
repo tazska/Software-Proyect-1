@@ -301,6 +301,12 @@ nav a {
   margin-top: 20px;
 }
 
+.grid-menu p {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
 .item:hover {
   transition: all 0.3s ease;
   background: #fff;
@@ -353,6 +359,12 @@ nav a {
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
+}
+
+.grid-combos p {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
 }
 
 .grid-combos .item img {
