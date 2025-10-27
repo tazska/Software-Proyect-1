@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Papas Locas - Checkout</title>
-    <link rel="stylesheet" href="Style.css"> 
+    <link rel="stylesheet" href="Style.css">
     <style>
         /* Estilos específicos para la página de checkout */
         .checkout-container {
             max-width: 800px;
             margin: 50px auto;
             padding: 30px;
-            background-color: #1a0f0a; /* Fondo oscuro */
+            background-color: #1a0f0a;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 111, 0, 0.5); /* Sombra naranja */
+            box-shadow: 0 0 20px rgba(255, 111, 0, 0.5);
             text-align: center;
         }
 
@@ -24,7 +24,7 @@
         }
 
         .order-summary {
-            background-color: #331f14; /* Fondo más claro para la tabla */
+            background-color: #331f14;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 30px;
@@ -45,7 +45,7 @@
 
         .order-table th, .order-table td {
             padding: 12px;
-            border-bottom: 1px solid #FF6F00; /* Separador naranja */
+            border-bottom: 1px solid #FF6F00;
             text-align: left;
             font-family: "Varela Round", sans-serif;
             color: #FFB74D;
@@ -88,7 +88,7 @@
             font-size: 18px;
             transition: all 0.3s ease;
         }
-        
+
         .delivery-options label:hover,
         .delivery-options input[type="radio"]:checked + label {
             border: 2px solid #FF6F00;
@@ -98,6 +98,55 @@
 
         .delivery-options input[type="radio"] {
             display: none;
+        }
+
+        .user-info {
+            background-color: #331f14;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .user-info label {
+            display: block;
+            color: #FFB74D;
+            margin-top: 15px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .user-info input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #FF6F00;
+            border-radius: 5px;
+            background-color: #1a0f0a;
+            color: #FFB74D;
+            font-size: 16px;
+            margin-top: 5px;
+            font-family: "Varela Round", sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .user-info input:focus {
+            outline: none;
+            border-color: #FF5722;
+            box-shadow: 0 0 10px rgba(255, 111, 0, 0.3);
+        }
+
+        .user-info input::placeholder {
+            color: #8d6e5a;
+        }
+
+        #direccionField {
+            display: none;
+        }
+
+        .required {
+            color: #FF5722;
+            font-weight: bold;
         }
 
         #btnConfirmOrder {
@@ -114,9 +163,15 @@
             transition: background 0.3s ease;
         }
 
-        #btnConfirmOrder:hover {
+        #btnConfirmOrder:hover:not(:disabled) {
             background: #FF5722;
             color: #fff;
+        }
+
+        #btnConfirmOrder:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
 
         #messageArea {
@@ -125,91 +180,174 @@
             font-family: "Varela Round", sans-serif;
             font-size: 18px;
         }
+
+        .payment-button {
+            width: 100%;
+            padding: 15px;
+            background: #FFB74D;
+            color: #1a0f0a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Bungee', sans-serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .payment-button:hover:not(:disabled) {
+            background: #FF9800;
+        }
+
+        .payment-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            border-top-color: #FF6F00;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body>
-    <header>
-        <div class="logo"><img src="IMG/logo.png" alt=""></div>
-        <nav>
-            <ul>
-                <li><a href="Index.html#menu">Volver al Menú</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <div class="logo"><img src="IMG/logo.png" alt=""></div>
+    <nav>
+        <ul>
+            <li><a href="Index.html#menu">Volver al Menú</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <section class="checkout-container">
-        <h2 class="bungee-regular">Finalizar Pedido</h2>
+<section class="checkout-container">
+    <h2 class="bungee-regular">Finalizar Pedido</h2>
 
-        <div class="order-summary">
-            <h3 class="bungee-regular">Resumen de tu Compra</h3>
-            <table class="order-table" id="orderTableBody">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unit.</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </table>
-            
-            <p class="order-total">Total a pagar: <span id="checkoutTotal">$0.00</span></p>
+    <div class="order-summary">
+        <h3 class="bungee-regular">Resumen de tu Compra</h3>
+        <table class="order-table" id="orderTableBody">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unit.</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p class="order-total">Total a pagar: <span id="checkoutTotal">$0.00</span></p>
+    </div>
+
+    <form id="deliveryForm">
+        <div class="user-info">
+            <h3 style="color:#FFB74D; text-align:center; margin-bottom: 20px;">📋 Datos del Cliente</h3>
+
+            <label for="nombre">Nombre Completo <span class="required">*</span></label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez">
+
+            <label for="email">Correo Electrónico <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="Ej. juan@gmail.com">
+
+            <label for="telefono">Teléfono/WhatsApp <span class="required">*</span></label>
+            <input type="tel" id="telefono" name="telefono" required placeholder="Ej. 3124567890" minlength="10">
+
+            <div id="direccionField">
+                <label for="direccion">Dirección de Entrega <span class="required">*</span></label>
+                <input type="text" id="direccion" name="direccion" placeholder="Ej. Calle 10 #23-45, Barrio Centro">
+            </div>
         </div>
 
         <div class="delivery-options">
             <h3 class="bungee-regular">¿Cómo recibirás tu pedido?</h3>
-            <form id="deliveryForm">
-                <input type="radio" id="domicilio" name="deliveryMethod" value="Domicilio" required>
-                <label for="domicilio">🛵 Domicilio</label>
 
-                <input type="radio" id="recoger" name="deliveryMethod" value="Recoger en el lugar" required>
-                <label for="recoger">🛍️ Recoger en el lugar (Take-out)</label>
+            <input type="radio" id="domicilio" name="deliveryMethod" value="Domicilio" required>
+            <label for="domicilio">🛵 Domicilio</label>
 
-                <input type="radio" id="comer" name="deliveryMethod" value="Comer en el lugar" required>
-                <label for="comer">🍽️ Comer en el lugar (Reservado)</label>
-                
-                <button type="submit" id="btnConfirmOrder">CONFIRMAR PEDIDO</button>
-            </form>
+            <input type="radio" id="recoger" name="deliveryMethod" value="Recoger en el lugar" required>
+            <label for="recoger">🛍️ Recoger en el lugar (Take-out)</label>
+
+            <input type="radio" id="comer" name="deliveryMethod" value="Comer en el lugar" required>
+            <label for="comer">🍽️ Comer en el lugar (Reservado)</label>
+
+            <button type="submit" id="btnConfirmOrder">CONFIRMAR Y CONTINUAR AL PAGO</button>
         </div>
-        
-        <p id="messageArea"></p>
-    </section>
+    </form>
 
-    <footer id="contacto">
-        <div class="contacto">
-          <h3>Contáctanos</h3>
-          <p>312739897<br>correo@gmail.com<br>Barrio centro<br>Villagarzón - Putumayo</p>
-        </div>
-        <div class="productos">
-          <h3>Productos nuevos</h3>
-          <ul>
+    <div id="paymentOptions" style="margin-top: 20px; display: none;"></div>
+    <p id="messageArea"></p>
+</section>
+
+<footer id="contacto">
+    <div class="contacto">
+        <h3>Contáctanos</h3>
+        <p>312739897<br>correo@gmail.com<br>Barrio centro<br>Villagarzón - Putumayo</p>
+    </div>
+    <div class="productos">
+        <h3>Productos nuevos</h3>
+        <ul>
             <li>Pan Especial</li>
             <li>Galletas individuales</li>
-          </ul>
-        </div>
-        <div class="social">
-          <p style="color: #1a0f0a;">Síguenos en:</p>
-          <a href="https://www.facebook.com/papas.locas.21481" target="_blank"><img src="IMG/facebook.png" alt=""></a>  <a href="https://www.instagram.com/papas_locas_villagarzon/" target="_blank"><img src="IMG/instagram.png" alt=""></a>  <a href="https://l.instagram.com/?u=https%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D573155815865%26fbclid%3DPAZXh0bgNhZW0CMTEAAadrIpfRVDxZZ_tsfk73VkAY5vCQbympe2EBeOIALLGq0pQMVu28G4sF_Ht54g_aem_8xDni7X7JDu3OUFKbqf35w&e=AT0rEslVmtKmpgthaDwnr7I4sZbCWDbN6e3OUIsiBkKgUk0csXiJPFTRVSjDb2DPdljMQ7-nJGVxl2QxcTmmcq4_crFEYRzmbkMIq_VZrA" target="_blank"><img src="IMG/whatsapp.png" alt=""></a>
-        </div>
-    </footer>
+        </ul>
+    </div>
+    <div class="social">
+        <p style="color: #1a0f0a;">Síguenos en:</p>
+        <a href="https://www.facebook.com/papas.locas.21481" target="_blank"><img src="IMG/facebook.png" alt=""></a>
+        <a href="https://www.instagram.com/papas_locas_villagarzon/" target="_blank"><img src="IMG/instagram.png" alt=""></a>
+        <a href="https://api.whatsapp.com/send?phone=573155815865" target="_blank"><img src="IMG/whatsapp.png" alt=""></a>
+    </div>
+</footer>
 
 <script>
+    // ═══════════════════════════════════════════════════════════════
+    // CONFIGURACIÓN DE LA API
+    // ═══════════════════════════════════════════════════════════════
+    const API_URL = 'http://localhost:3000/api'; // Cambiar en producción
+
     document.addEventListener('DOMContentLoaded', function() {
-        const orderTableBody = document.getElementById('orderTableBody');
+        const orderTableBody = document.querySelector('#orderTableBody tbody');
         const checkoutTotalDisplay = document.getElementById('checkoutTotal');
         const deliveryForm = document.getElementById('deliveryForm');
         const messageArea = document.getElementById('messageArea');
-        
-        // NUENO: Contenedor para los botones de pago
-        const paymentButtonsContainer = document.createElement('div');
-        paymentButtonsContainer.id = 'paymentOptions';
-        paymentButtonsContainer.style.marginTop = '20px';
-        paymentButtonsContainer.style.display = 'none'; // Inicialmente oculto
-        
-        // 1. Cargar el pedido desde localStorage
+        const direccionField = document.getElementById('direccionField');
+        const direccionInput = document.getElementById('direccion');
+        const paymentButtonsContainer = document.getElementById('paymentOptions');
+
+        // Mostrar/Ocultar campo dirección según método de entrega
+        document.querySelectorAll('input[name="deliveryMethod"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.id === 'domicilio' && radio.checked) {
+                    direccionField.style.display = 'block';
+                    direccionInput.setAttribute('required', 'required');
+                } else {
+                    direccionField.style.display = 'none';
+                    direccionInput.removeAttribute('required');
+                }
+            });
+        });
+
+        // Validación: solo letras y espacios en nombre
+        document.getElementById('nombre').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^a-záéíóúñA-ZÁÉÍÓÚÑ\s]/g, '');
+        });
+
+        // Validación: solo números en teléfono
+        document.getElementById('telefono').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Cargar pedido desde localStorage
         const carritoData = localStorage.getItem('papasLocasCarrito');
         const carrito = carritoData ? JSON.parse(carritoData) : [];
         let totalPedido = 0;
@@ -221,7 +359,7 @@
             return;
         }
 
-        // 2. Renderizar los productos en la tabla
+        // Renderizar productos en la tabla
         carrito.forEach(item => {
             const subtotal = item.precio * item.cantidad;
             totalPedido += subtotal;
@@ -233,98 +371,228 @@
                 <td>$${item.precio.toFixed(2)}</td>
                 <td>$${subtotal.toFixed(2)}</td>
             `;
-            orderTableBody.querySelector('tbody').appendChild(row);
+            orderTableBody.appendChild(row);
         });
 
-        // 3. Mostrar el total
         checkoutTotalDisplay.textContent = `$${totalPedido.toFixed(2)}`;
 
-        // 4. Crear los botones de pago
+        // Métodos de pago
         const paymentMethods = [
             { name: "Efectivo", icon: "💵" },
             { name: "Transferencia", icon: "💳" },
             { name: "Otro Método", icon: "✨" }
         ];
 
-        paymentMethods.forEach(method => {
-            const button = document.createElement('button');
-            button.className = 'payment-button';
-            button.textContent = `${method.icon} Pagar con ${method.name}`;
-            button.style.cssText = `
-                width: 100%;
-                padding: 15px;
-                background: #FFB74D; 
-                color: #1a0f0a;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-family: 'Bungee', sans-serif;
-                font-size: 18px;
-                margin-bottom: 10px;
-                transition: background 0.3s ease;
-            `;
-            button.onmouseover = () => button.style.background = '#FF9800';
-            button.onmouseout = () => button.style.background = '#FFB74D';
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCIÓN: Registrar venta en la base de datos
+        // ═══════════════════════════════════════════════════════════════
+        async function registrarVenta(metodoPago) {
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const direccion = document.getElementById('direccion').value.trim();
+            const metodoEntrega = document.querySelector('input[name="deliveryMethod"]:checked').value;
 
-            button.addEventListener('click', function() {
-                const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+            // Preparar datos para enviar
+            const ventaData = {
+                nombre: nombre,
+                email: email,
+                telefono: telefono,
+                direccion: metodoEntrega === 'Domicilio' ? direccion : null,
+                metodo_entrega: metodoEntrega,
+                metodo_pago: metodoPago,
+                productos: carrito,
+                total: totalPedido
+            };
+
+            try {
+                // Mostrar loader
+                const buttons = document.querySelectorAll('.payment-button');
+                buttons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="loader"></span> Procesando...';
+                });
+
+                // Enviar datos a la API
+                const response = await fetch(`${API_URL}/ventas/registrar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(ventaData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Venta registrada exitosamente
+                    mostrarMensajeFinal(metodoPago, metodoEntrega, nombre, email, telefono, direccion, result.data);
+                    
+                    // Limpiar carrito
+                    localStorage.removeItem('papasLocasCarrito');
+                } else {
+                    throw new Error(result.mensaje || 'Error al registrar la venta');
+                }
+            } catch (error) {
+                console.error('Error:', error);
                 
-                // Mostrar el mensaje final de confirmación de pago y limpieza
-                const finalMessage = `
-🎉 ¡PEDIDO LISTO PARA ENVIAR!
-Método de Recepción: ${deliveryMethod}
-Método de Pago Seleccionado: ${method.name}
-Total: $${totalPedido.toFixed(2)}
-
-Procesaremos tu pedido de inmediato. ¡Gracias!
-`;
+                // Restaurar botones
+                crearBotonesPago();
+                
+                // Mostrar error
                 messageArea.style.whiteSpace = 'pre-wrap';
-                messageArea.style.border = '2px solid #66bb6a';
+                messageArea.style.border = '2px solid #ef5350';
                 messageArea.style.padding = '20px';
-                messageArea.style.backgroundColor = '#e8f5e9';
-                messageArea.style.color = '#2e7d32';
+                messageArea.style.backgroundColor = '#ffebee';
+                messageArea.style.color = '#c62828';
                 messageArea.style.borderRadius = '8px';
-                messageArea.textContent = finalMessage;
+                messageArea.textContent = `❌ ERROR AL REGISTRAR LA VENTA\n\n${error.message}\n\n⚠️ Por favor verifica:\n• Que el servidor Node.js esté corriendo\n• Que la base de datos esté activa\n• Tu conexión a internet\n\nIntenta nuevamente o contacta al administrador.`;
+            }
+        }
 
-                // Ocultar botones y limpiar localStorage
-                paymentButtonsContainer.style.display = 'none';
-                deliveryForm.style.display = 'none';
-                localStorage.removeItem('papasLocasCarrito');
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCIÓN: Mostrar mensaje final
+        // ═══════════════════════════════════════════════════════════════
+        function mostrarMensajeFinal(metodoPago, metodoEntrega, nombre, email, telefono, direccion, dataVenta) {
+            const resumenProductos = carrito.map(item => 
+                `  • ${item.cantidad}x ${item.nombre} - $${(item.precio * item.cantidad).toFixed(2)}`
+            ).join('\n');
+
+            let datosCliente = `👤 Nombre: ${nombre}
+📧 Email: ${email}
+📱 Teléfono: ${telefono}`;
+
+            if (metodoEntrega === 'Domicilio') {
+                datosCliente += `\n🏠 Dirección: ${direccion}`;
+            }
+
+            const finalMessage = `
+🎉 ¡PEDIDO CONFIRMADO EXITOSAMENTE!
+
+═══════════════════════════════════════════════
+
+📋 DATOS DEL CLIENTE:
+${datosCliente}
+
+═══════════════════════════════════════════════
+
+🚚 MÉTODO DE RECEPCIÓN:
+${metodoEntrega}
+
+═══════════════════════════════════════════════
+
+🛒 RESUMEN DEL PEDIDO:
+${resumenProductos}
+
+💰 TOTAL PAGADO: $${totalPedido.toFixed(2)}
+
+═══════════════════════════════════════════════
+
+💳 MÉTODO DE PAGO:
+${metodoPago}
+
+═══════════════════════════════════════════════
+
+✅ Tu pedido #${dataVenta.id_venta} ha sido registrado exitosamente
+   en nuestra base de datos.
+
+📞 Te contactaremos al ${telefono} para confirmar tu pedido.
+
+🕐 Fecha y hora: ${new Date().toLocaleString('es-CO')}
+
+¡Gracias por tu compra en Papas Locas! 🍟
+`;
+
+            messageArea.style.whiteSpace = 'pre-wrap';
+            messageArea.style.border = '2px solid #66bb6a';
+            messageArea.style.padding = '20px';
+            messageArea.style.backgroundColor = '#e8f5e9';
+            messageArea.style.color = '#2e7d32';
+            messageArea.style.borderRadius = '8px';
+            messageArea.textContent = finalMessage;
+
+            // Ocultar todo excepto el mensaje final
+            paymentButtonsContainer.style.display = 'none';
+            deliveryForm.style.display = 'none';
+
+            // Scroll al mensaje
+            messageArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Redirigir al menú después de 10 segundos
+            setTimeout(() => {
+                window.location.href = 'Index.html#menu';
+            }, 10000);
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        // FUNCIÓN: Crear botones de pago
+        // ═══════════════════════════════════════════════════════════════
+        function crearBotonesPago() {
+            paymentButtonsContainer.innerHTML = '';
+            
+            paymentMethods.forEach(method => {
+                const button = document.createElement('button');
+                button.className = 'payment-button';
+                button.textContent = `${method.icon} Pagar con ${method.name}`;
+
+                button.addEventListener('click', function() {
+                    registrarVenta(method.name);
+                });
+
+                paymentButtonsContainer.appendChild(button);
             });
+        }
 
-            paymentButtonsContainer.appendChild(button);
-        });
-
-        // Agregar el contenedor de botones de pago al final del contenedor principal
-        document.querySelector('.checkout-container').appendChild(paymentButtonsContainer);
-
-
-        // 5. Manejar el envío del formulario (Selección de Entrega)
+        // ═══════════════════════════════════════════════════════════════
+        // EVENTO: Confirmar formulario y mostrar opciones de pago
+        // ═══════════════════════════════════════════════════════════════
         deliveryForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
-            
-            // 1. Ocultar el botón de confirmar pedido (dentro del formulario)
-            document.getElementById('btnConfirmOrder').style.display = 'none'; 
-            
-            // 2. Mostrar un mensaje temporal de la elección
+            // Validaciones adicionales
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked');
+
+            if (!nombre || !email || !telefono) {
+                alert('⚠️ Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            if (telefono.length < 10) {
+                alert('⚠️ El teléfono debe tener al menos 10 dígitos');
+                return;
+            }
+
+            if (deliveryMethod.value === 'Domicilio') {
+                const direccion = document.getElementById('direccion').value.trim();
+                if (!direccion) {
+                    alert('⚠️ Por favor ingresa la dirección de entrega');
+                    return;
+                }
+            }
+
+            // Ocultar botón de confirmar
+            document.getElementById('btnConfirmOrder').style.display = 'none';
+
+            // Mostrar mensaje de progreso
             messageArea.style.whiteSpace = 'normal';
             messageArea.style.border = '2px solid #29b6f6';
             messageArea.style.padding = '15px';
             messageArea.style.backgroundColor = '#e1f5fe';
             messageArea.style.color = '#0277bd';
             messageArea.style.borderRadius = '8px';
-            messageArea.textContent = `🛵 Has seleccionado: ${deliveryMethod}. Ahora elige tu método de pago.`;
+            messageArea.textContent = `✅ Datos confirmados. ${deliveryMethod.value} seleccionado. Ahora elige tu método de pago:`;
 
-            // 3. Mostrar los botones de pago
+            // Crear y mostrar botones de pago
+            crearBotonesPago();
             paymentButtonsContainer.style.display = 'block';
 
-            // Opcional: Ocultar los radio buttons de entrega si se desea enfocar solo en el pago
-            // document.querySelector('.delivery-options').style.display = 'none';
+            // Scroll a opciones de pago
+            paymentButtonsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
     });
 </script>
 </body>
-
 </html>
