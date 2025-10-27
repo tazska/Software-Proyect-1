@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papas Locas - Checkout</title>
+    <link rel="stylesheet" href="Style.css"> 
+    <style>
+        /* Estilos específicos para la página de checkout */
+        .checkout-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #1a0f0a; /* Fondo oscuro */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 111, 0, 0.5); /* Sombra naranja */
+            text-align: center;
+        }
+
+        .checkout-container h2 {
+            margin-bottom: 30px;
+            color: #FFB74D;
+        }
+
+        .order-summary {
+            background-color: #331f14; /* Fondo más claro para la tabla */
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .order-summary h3 {
+            color: #FFB74D;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .order-table th, .order-table td {
+            padding: 12px;
+            border-bottom: 1px solid #FF6F00; /* Separador naranja */
+            text-align: left;
+            font-family: "Varela Round", sans-serif;
+            color: #FFB74D;
+        }
+
+        .order-table th {
+            background-color: #FF6F00;
+            color: #1a0f0a;
+            font-family: "Bungee", sans-serif;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .order-total {
+            text-align: right;
+            font-size: 28px;
+            font-family: "Bungee", sans-serif;
+            color: #FF5722;
+        }
+
+        .order-total span {
+            color: #FFB74D;
+        }
+
+        .delivery-options h3 {
+            color: #FFB74D;
+            margin-bottom: 15px;
+        }
+
+        .delivery-options label {
+            display: block;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #331f14;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: "Varela Round", sans-serif;
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .delivery-options label:hover,
+        .delivery-options input[type="radio"]:checked + label {
+            border: 2px solid #FF6F00;
+            background-color: #4b2e1e;
+            color: #FFB74D;
+        }
+
+        .delivery-options input[type="radio"] {
+            display: none;
+        }
+
+        #btnConfirmOrder {
+            width: 100%;
+            padding: 15px;
+            background: #FF6F00;
+            color: #1a0f0a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Bungee', sans-serif;
+            font-size: 20px;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        #btnConfirmOrder:hover {
+            background: #FF5722;
+            color: #fff;
+        }
+
+        #messageArea {
+            color: #FFB74D;
+            margin-top: 20px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo"><img src="IMG/logo.png" alt=""></div>
+        <nav>
+            <ul>
+                <li><a href="Index.html#menu">Volver al Menú</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="checkout-container">
+        <h2 class="bungee-regular">Finalizar Pedido</h2>
+
+        <div class="order-summary">
+            <h3 class="bungee-regular">Resumen de tu Compra</h3>
+            <table class="order-table" id="orderTableBody">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unit.</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+            
+            <p class="order-total">Total a pagar: <span id="checkoutTotal">$0.00</span></p>
+        </div>
+
+        <div class="delivery-options">
+            <h3 class="bungee-regular">¿Cómo recibirás tu pedido?</h3>
+            <form id="deliveryForm">
+                <input type="radio" id="domicilio" name="deliveryMethod" value="Domicilio" required>
+                <label for="domicilio">🛵 Domicilio</label>
+
+                <input type="radio" id="recoger" name="deliveryMethod" value="Recoger en el lugar" required>
+                <label for="recoger">🛍️ Recoger en el lugar (Take-out)</label>
+
+                <input type="radio" id="comer" name="deliveryMethod" value="Comer en el lugar" required>
+                <label for="comer">🍽️ Comer en el lugar (Reservado)</label>
+                
+                <button type="submit" id="btnConfirmOrder">CONFIRMAR PEDIDO</button>
+            </form>
+        </div>
+        
+        <p id="messageArea"></p>
+    </section>
+
+    <footer id="contacto">
+        <div class="contacto">
+          <h3>Contáctanos</h3>
+          <p>312739897<br>correo@gmail.com<br>Barrio centro<br>Villagarzón - Putumayo</p>
+        </div>
+        <div class="productos">
+          <h3>Productos nuevos</h3>
+          <ul>
+            <li>Pan Especial</li>
+            <li>Galletas individuales</li>
+          </ul>
+        </div>
+        <div class="social">
+          <p style="color: #1a0f0a;">Síguenos en:</p>
+          <a href="https://www.facebook.com/papas.locas.21481" target="_blank"><img src="IMG/facebook.png" alt=""></a>  <a href="https://www.instagram.com/papas_locas_villagarzon/" target="_blank"><img src="IMG/instagram.png" alt=""></a>  <a href="https://l.instagram.com/?u=https%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D573155815865%26fbclid%3DPAZXh0bgNhZW0CMTEAAadrIpfRVDxZZ_tsfk73VkAY5vCQbympe2EBeOIALLGq0pQMVu28G4sF_Ht54g_aem_8xDni7X7JDu3OUFKbqf35w&e=AT0rEslVmtKmpgthaDwnr7I4sZbCWDbN6e3OUIsiBkKgUk0csXiJPFTRVSjDb2DPdljMQ7-nJGVxl2QxcTmmcq4_crFEYRzmbkMIq_VZrA" target="_blank"><img src="IMG/whatsapp.png" alt=""></a>
+        </div>
+    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderTableBody = document.getElementById('orderTableBody');
+        const checkoutTotalDisplay = document.getElementById('checkoutTotal');
+        const deliveryForm = document.getElementById('deliveryForm');
+        const messageArea = document.getElementById('messageArea');
+        
+        // NUENO: Contenedor para los botones de pago
+        const paymentButtonsContainer = document.createElement('div');
+        paymentButtonsContainer.id = 'paymentOptions';
+        paymentButtonsContainer.style.marginTop = '20px';
+        paymentButtonsContainer.style.display = 'none'; // Inicialmente oculto
+        
+        // 1. Cargar el pedido desde localStorage
+        const carritoData = localStorage.getItem('papasLocasCarrito');
+        const carrito = carritoData ? JSON.parse(carritoData) : [];
+        let totalPedido = 0;
+
+        if (carrito.length === 0) {
+            orderTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #fff;">No hay productos en tu carrito.</td></tr>';
+            messageArea.textContent = 'Serás redirigido al menú en 5 segundos.';
+            setTimeout(() => window.location.href = 'Index.html#menu', 5000);
+            return;
+        }
+
+        // 2. Renderizar los productos en la tabla
+        carrito.forEach(item => {
+            const subtotal = item.precio * item.cantidad;
+            totalPedido += subtotal;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.nombre}</td>
+                <td>${item.cantidad}</td>
+                <td>$${item.precio.toFixed(2)}</td>
+                <td>$${subtotal.toFixed(2)}</td>
+            `;
+            orderTableBody.querySelector('tbody').appendChild(row);
+        });
+
+        // 3. Mostrar el total
+        checkoutTotalDisplay.textContent = `$${totalPedido.toFixed(2)}`;
+
+        // 4. Crear los botones de pago
+        const paymentMethods = [
+            { name: "Efectivo", icon: "💵" },
+            { name: "Transferencia", icon: "💳" },
+            { name: "Otro Método", icon: "✨" }
+        ];
+
+        paymentMethods.forEach(method => {
+            const button = document.createElement('button');
+            button.className = 'payment-button';
+            button.textContent = `${method.icon} Pagar con ${method.name}`;
+            button.style.cssText = `
+                width: 100%;
+                padding: 15px;
+                background: #FFB74D; 
+                color: #1a0f0a;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-family: 'Bungee', sans-serif;
+                font-size: 18px;
+                margin-bottom: 10px;
+                transition: background 0.3s ease;
+            `;
+            button.onmouseover = () => button.style.background = '#FF9800';
+            button.onmouseout = () => button.style.background = '#FFB74D';
+
+            button.addEventListener('click', function() {
+                const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+                
+                // Mostrar el mensaje final de confirmación de pago y limpieza
+                const finalMessage = `
+🎉 ¡PEDIDO LISTO PARA ENVIAR!
+Método de Recepción: ${deliveryMethod}
+Método de Pago Seleccionado: ${method.name}
+Total: $${totalPedido.toFixed(2)}
+
+Procesaremos tu pedido de inmediato. ¡Gracias!
+`;
+                messageArea.style.whiteSpace = 'pre-wrap';
+                messageArea.style.border = '2px solid #66bb6a';
+                messageArea.style.padding = '20px';
+                messageArea.style.backgroundColor = '#e8f5e9';
+                messageArea.style.color = '#2e7d32';
+                messageArea.style.borderRadius = '8px';
+                messageArea.textContent = finalMessage;
+
+                // Ocultar botones y limpiar localStorage
+                paymentButtonsContainer.style.display = 'none';
+                deliveryForm.style.display = 'none';
+                localStorage.removeItem('papasLocasCarrito');
+            });
+
+            paymentButtonsContainer.appendChild(button);
+        });
+
+        // Agregar el contenedor de botones de pago al final del contenedor principal
+        document.querySelector('.checkout-container').appendChild(paymentButtonsContainer);
+
+
+        // 5. Manejar el envío del formulario (Selección de Entrega)
+        deliveryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
+            
+            // 1. Ocultar el botón de confirmar pedido (dentro del formulario)
+            document.getElementById('btnConfirmOrder').style.display = 'none'; 
+            
+            // 2. Mostrar un mensaje temporal de la elección
+            messageArea.style.whiteSpace = 'normal';
+            messageArea.style.border = '2px solid #29b6f6';
+            messageArea.style.padding = '15px';
+            messageArea.style.backgroundColor = '#e1f5fe';
+            messageArea.style.color = '#0277bd';
+            messageArea.style.borderRadius = '8px';
+            messageArea.textContent = `🛵 Has seleccionado: ${deliveryMethod}. Ahora elige tu método de pago.`;
+
+            // 3. Mostrar los botones de pago
+            paymentButtonsContainer.style.display = 'block';
+
+            // Opcional: Ocultar los radio buttons de entrega si se desea enfocar solo en el pago
+            // document.querySelector('.delivery-options').style.display = 'none';
+        });
+    });
+</script>
+</body>
+
+</html>

@@ -9,6 +9,64 @@
 .social img {
   height: 50px
 }
+/* Estilos del carrito de compras */
+.cart-nav-item {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-left: 50px;
+}
+
+.cart-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-icon {
+    height: 35px;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #FF5722;
+    color: #1a0f0a;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Bungee", sans-serif;
+}
+/* Fin estilos del carrito de compras */
+
+/* Estilos de botones de producto (corregidos del merge conflict) */
+.item button, .menu button, .combos button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: #FF6F00; /* Color naranja fuerte */
+  color: #1a0f0a; /* Texto oscuro */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.item button:hover, .menu button:hover, .combos button:hover {
+  background: #FF5722; /* Naranja más oscuro al hacer hover */
+  color: #fff; /* Texto blanco para mejor contraste en hover */
+  box-shadow: 0 4px 10px rgba(255, 111, 0, 0.4);
+}
+/* Fin estilos de botones */
 
 .menu button {
   color: #fff;
@@ -254,7 +312,7 @@ nav a {
 
 .item img {
   width: 100%;
-  height: 300px; 
+  height: 200px; /* Tamaño ajustado para menú */
   object-fit: cover; 
   object-position: center; 
   border-radius: 8px;
@@ -287,7 +345,7 @@ nav a {
   margin-top: 20px;
 }
 
-.grid-combos .item img { /* AGREGADO */
+.grid-combos .item img {
   width: 100%;
   height: 220px;
   object-fit: cover;
@@ -393,5 +451,3 @@ footer a {
   color: #1a0f0a;
   font-size: 20px;
 }
-
-
