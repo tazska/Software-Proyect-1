@@ -573,10 +573,10 @@ ${metodoPago}
                 }
             }
 
-            // Ocultar botón de confirmar
+            
             document.getElementById('btnConfirmOrder').style.display = 'none';
 
-            // Mostrar mensaje de progreso
+            
             messageArea.style.whiteSpace = 'normal';
             messageArea.style.border = '2px solid #29b6f6';
             messageArea.style.padding = '15px';
@@ -585,14 +585,14 @@ ${metodoPago}
             messageArea.style.borderRadius = '8px';
             messageArea.textContent = `✅ Datos confirmados. ${deliveryMethod.value} seleccionado. Ahora elige tu método de pago:`;
 
-            // Crear y mostrar botones de pago
+            
             crearBotonesPago();
             paymentButtonsContainer.style.display = 'block';
 
-            // Scroll a opciones de pago
+            
             paymentButtonsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
     });
 </script>
 </body>
-</html>
+</html>         
