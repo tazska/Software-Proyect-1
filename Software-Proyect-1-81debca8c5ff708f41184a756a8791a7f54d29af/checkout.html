@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papas Locas - Checkout</title>
+    <link rel="stylesheet" href="Style.css">
+    <style>
+        .checkout-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #1a0f0a;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 111, 0, 0.5);
+            text-align: center;
+        }
+
+        .checkout-container h2 {
+            margin-bottom: 30px;
+            color: #FFB74D;
+        }
+
+        .order-summary {
+            background-color: #331f14;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .order-summary h3 {
+            color: #FFB74D;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .order-table th, .order-table td {
+            padding: 12px;
+            border-bottom: 1px solid #FF6F00;
+            text-align: left;
+            font-family: "Varela Round", sans-serif;
+            color: #FFB74D;
+        }
+
+        .order-table th {
+            background-color: #FF6F00;
+            color: #1a0f0a;
+            font-family: "Bungee", sans-serif;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .order-total {
+            text-align: right;
+            font-size: 28px;
+            font-family: "Bungee", sans-serif;
+            color: #FF5722;
+        }
+
+        .order-total span {
+            color: #FFB74D;
+        }
+
+        .delivery-options h3 {
+            color: #FFB74D;
+            margin-bottom: 15px;
+        }
+
+        .delivery-options label {
+            display: block;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #331f14;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: "Varela Round", sans-serif;
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-options label:hover,
+        .delivery-options input[type="radio"]:checked + label {
+            border: 2px solid #FF6F00;
+            background-color: #4b2e1e;
+            color: #FFB74D;
+        }
+
+        .delivery-options input[type="radio"] {
+            display: none;
+        }
+
+        .user-info {
+            background-color: #331f14;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .user-info label {
+            display: block;
+            color: #FFB74D;
+            margin-top: 15px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .user-info input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #FF6F00;
+            border-radius: 5px;
+            background-color: #1a0f0a;
+            color: #FFB74D;
+            font-size: 16px;
+            margin-top: 5px;
+            font-family: "Varela Round", sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .user-info input:focus {
+            outline: none;
+            border-color: #FF5722;
+            box-shadow: 0 0 10px rgba(255, 111, 0, 0.3);
+        }
+
+        .user-info input::placeholder {
+            color: #8d6e5a;
+        }
+
+        #direccionField {
+            display: none;
+        }
+
+        .required {
+            color: #FF5722;
+            font-weight: bold;
+        }
+
+        #btnConfirmOrder {
+            width: 100%;
+            padding: 15px;
+            background: #FF6F00;
+            color: #1a0f0a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Bungee', sans-serif;
+            font-size: 20px;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        #btnConfirmOrder:hover:not(:disabled) {
+            background: #FF5722;
+            color: #fff;
+        }
+
+        #btnConfirmOrder:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #messageArea {
+            color: #FFB74D;
+            margin-top: 20px;
+            font-family: "Varela Round", sans-serif;
+            font-size: 18px;
+        }
+
+        .payment-methods {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .payment-method-card {
+            background: #331f14;
+            border: 2px solid #FF6F00;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .payment-method-card:hover {
+            background: #4b2e1e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 111, 0, 0.4);
+        }
+
+        .payment-method-card.selected {
+            border-color: #4CAF50;
+            background: #2d4a2d;
+        }
+
+        .payment-icon {
+            font-size: 40px;
+            min-width: 50px;
+        }
+
+        .payment-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .payment-info h4 {
+            color: #FFB74D;
+            margin: 0 0 5px 0;
+            font-family: "Bungee", sans-serif;
+        }
+
+        .payment-info p {
+            color: #FFB74D;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #1a0f0a;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid #FF6F00;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #FFB74D;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #FFB74D;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .card-form-group {
+            margin-bottom: 20px;
+        }
+
+        .card-form-group label {
+            display: block;
+            color: #FFB74D;
+            margin-bottom: 8px;
+            font-family: "Varela Round", sans-serif;
+        }
+
+        .card-form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #FF6F00;
+            border-radius: 5px;
+            background-color: #331f14;
+            color: #FFB74D;
+            font-size: 16px;
+            font-family: "Varela Round", sans-serif;
+        }
+
+        .card-form-group input:focus {
+            outline: none;
+            border-color: #FF5722;
+        }
+
+        .card-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .card-row .card-form-group {
+            flex: 1;
+        }
+
+        .card-visual {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 25px;
+            min-height: 180px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card-number-display {
+            font-size: 22px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .card-details-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Bungee', sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-pay:hover:not(:disabled) {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-pay:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .processing-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #331f14;
+            border-top-color: #FF6F00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .processing-text {
+            color: #FFB74D;
+            font-family: "Bungee", sans-serif;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .wompi-badge {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #00D4AA 0%, #00B894 100%);
+            border-radius: 10px;
+            color: white;
+            font-family: "Bungee", sans-serif;
+            box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+        }
+
+        .wompi-logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="logo"><img src="IMG/logo.png" alt=""></div>
+    <nav>
+        <ul>
+            <li><a href="Index.html#menu">Volver al Menú</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="checkout-container">
+    <h2 class="bungee-regular">Finalizar Pedido</h2>
+
+    <div class="order-summary">
+        <h3 class="bungee-regular">Resumen de tu Compra</h3>
+        <table class="order-table" id="orderTableBody">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unit.</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p class="order-total">Total a pagar: <span id="checkoutTotal">$0.00</span></p>
+    </div>
+
+    <form id="deliveryForm">
+        <div class="user-info">
+            <h3 style="color:#FFB74D; text-align:center; margin-bottom: 20px;">📋 Datos del Cliente</h3>
+
+            <label for="nombre">Nombre Completo <span class="required">*</span></label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez">
+
+            <label for="email">Correo Electrónico <span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="Ej. juan@gmail.com">
+
+            <label for="telefono">Teléfono/WhatsApp <span class="required">*</span></label>
+            <input type="tel" id="telefono" name="telefono" required placeholder="Ej. 3124567890" minlength="10">
+
+            <div id="direccionField">
+                <label for="direccion">Dirección de Entrega <span class="required">*</span></label>
+                <input type="text" id="direccion" name="direccion" placeholder="Ej. Calle 10 #23-45, Barrio Centro">
+            </div>
+        </div>
+
+        <div class="delivery-options">
+            <h3 class="bungee-regular">¿Cómo recibirás tu pedido?</h3>
+
+            <input type="radio" id="domicilio" name="deliveryMethod" value="Domicilio" required>
+            <label for="domicilio">🛵 Domicilio</label>
+
+            <input type="radio" id="recoger" name="deliveryMethod" value="Recoger en el lugar" required>
+            <label for="recoger">🛍️ Recoger en el lugar (Take-out)</label>
+
+            <input type="radio" id="comer" name="deliveryMethod" value="Comer en el lugar" required>
+            <label for="comer">🍽️ Comer en el lugar (Reservado)</label>
+
+            <button type="submit" id="btnConfirmOrder">CONFIRMAR Y CONTINUAR AL PAGO</button>
+        </div>
+    </form>
+
+    <div class="payment-methods" id="paymentMethods">
+        <div class="wompi-badge">
+            <div class="wompi-logo">WOMPI</div>
+            <div style="font-size: 14px; margin-top: 5px;">Pagos seguros y confiables</div>
+        </div>
+
+        <h3 class="bungee-regular" style="color: #FFB74D; margin-bottom: 20px;">💳 Selecciona tu método de pago</h3>
+
+        <div class="payment-method-card" data-method="card">
+            <div class="payment-icon">💳</div>
+            <div class="payment-info">
+                <h4>Tarjeta de Crédito/Débito</h4>
+                <p>Visa, Mastercard, American Express</p>
+            </div>
+        </div>
+
+        <div class="payment-method-card" data-method="nequi">
+            <div class="payment-icon">📱</div>
+            <div class="payment-info">
+                <h4>Nequi</h4>
+                <p>Paga con tu cuenta Nequi</p>
+            </div>
+        </div>
+
+        <div class="payment-method-card" data-method="pse">
+            <div class="payment-icon">🏦</div>
+            <div class="payment-info">
+                <h4>PSE - Pago Seguro en Línea</h4>
+                <p>Transferencia desde tu banco</p>
+            </div>
+        </div>
+
+        <div class="payment-method-card" data-method="efectivo">
+            <div class="payment-icon">💵</div>
+            <div class="payment-info">
+                <h4>Efectivo</h4>
+                <p>Paga al recibir tu pedido</p>
+            </div>
+        </div>
+
+        <div class="payment-method-card" data-method="transferencia">
+            <div class="payment-icon">🔄</div>
+            <div class="payment-info">
+                <h4>Transferencia Bancaria</h4>
+                <p>Transferencia directa</p>
+            </div>
+        </div>
+    </div>
+
+    <p id="messageArea"></p>
+</section>
+
+<div class="payment-modal" id="cardModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>💳 Pago con Tarjeta - Wompi</h3>
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+
+        <div class="card-visual">
+            <div class="card-chip"></div>
+            <div class="card-number-display" id="cardNumberDisplay">•••• •••• •••• ••••</div>
+            <div class="card-details-row">
+                <div>
+                    <div style="font-size: 10px; opacity: 0.7;">TITULAR</div>
+                    <div id="cardNameDisplay">NOMBRE APELLIDO</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 10px; opacity: 0.7;">VENCE</div>
+                    <div id="cardExpiryDisplay">MM/AA</div>
+                </div>
+            </div>
+        </div>
+
+        <form id="cardForm">
+            <div class="card-form-group">
+                <label>Número de Tarjeta *</label>
+                <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required>
+                <small style="color: #FFB74D; font-size: 12px;">Prueba: 4242 4242 4242 4242</small>
+            </div>
+
+            <div class="card-form-group">
+                <label>Nombre del Titular *</label>
+                <input type="text" id="cardName" placeholder="JUAN PEREZ" required>
+            </div>
+
+            <div class="card-row">
+                <div class="card-form-group">
+                    <label>Vencimiento *</label>
+                    <input type="text" id="cardExpiry" placeholder="12/25" maxlength="5" required>
+                </div>
+                <div class="card-form-group">
+                    <label>CVV *</label>
+                    <input type="password" id="cardCvv" placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-pay">PAGAR $<span id="modalTotal">0.00</span></button>
+        </form>
+    </div>
+</div>
+
+<div class="processing-overlay" id="processingOverlay">
+    <div class="spinner"></div>
+    <div class="processing-text">Procesando pago con Wompi...</div>
+</div>
+
+<footer id="contacto">
+    <div class="contacto">
+        <h3>Contáctanos</h3>
+        <p>312739897<br>correo@gmail.com<br>Barrio centro<br>Villagarzón - Putumayo</p>
+    </div>
+    <div class="productos">
+        <h3>Productos nuevos</h3>
+        <ul>
+            <li>Pan Especial</li>
+            <li>Galletas individuales</li>
+        </ul>
+    </div>
+    <div class="social">
+        <p style="color: #1a0f0a;">Síguenos en:</p>
+        <a href="https://www.facebook.com/papas.locas.21481" target="_blank"><img src="IMG/facebook.png" alt=""></a>
+        <a href="https://www.instagram.com/papas_locas_villagarzon/" target="_blank"><img src="IMG/instagram.png" alt=""></a>
+        <a href="https://api.whatsapp.com/send?phone=573155815865" target="_blank"><img src="IMG/whatsapp.png" alt=""></a>
+    </div>
+</footer>
+
+<script>
+    const API_URL = 'http://localhost:3000/api';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderTableBody = document.querySelector('#orderTableBody tbody');
+        const checkoutTotalDisplay = document.getElementById('checkoutTotal');
+        const deliveryForm = document.getElementById('deliveryForm');
+        const messageArea = document.getElementById('messageArea');
+        const direccionField = document.getElementById('direccionField');
+        const direccionInput = document.getElementById('direccion');
+        const paymentMethodsContainer = document.getElementById('paymentMethods');
+        const cardModal = document.getElementById('cardModal');
+        const closeModal = document.getElementById('closeModal');
+        const cardForm = document.getElementById('cardForm');
+        const processingOverlay = document.getElementById('processingOverlay');
+
+        let totalPedido = 0;
+        let datosCliente = {};
+        let carrito = [];
+
+        // Mostrar/Ocultar campo dirección
+        document.querySelectorAll('input[name="deliveryMethod"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                if (radio.id === 'domicilio' && radio.checked) {
+                    direccionField.style.display = 'block';
+                    direccionInput.setAttribute('required', 'required');
+                } else {
+                    direccionField.style.display = 'none';
+                    direccionInput.removeAttribute('required');
+                }
+            });
+        });
+
+        // Validaciones
+        document.getElementById('nombre').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^a-záéíóúñA-ZÁÉÍÓÚÑ\s]/g, '');
+        });
+
+        document.getElementById('telefono').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Cargar carrito
+        const carritoData = localStorage.getItem('papasLocasCarrito');
+        carrito = carritoData ? JSON.parse(carritoData) : [];
+
+        if (carrito.length === 0) {
+            orderTableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #fff;">No hay productos en tu carrito.</td></tr>';
+            messageArea.textContent = 'Serás redirigido al menú en 5 segundos.';
+            setTimeout(() => window.location.href = 'Index.html#menu', 5000);
+            return;
+        }
+
+        // Renderizar productos
+        carrito.forEach(item => {
+            const subtotal = item.precio * item.cantidad;
+            totalPedido += subtotal;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.nombre}</td>
+                <td>${item.cantidad}</td>
+                <td>$${item.precio.toFixed(2)}</td>
+                <td>$${subtotal.toFixed(2)}</td>
+            `;
+            orderTableBody.appendChild(row);
+        });
+
+        checkoutTotalDisplay.textContent = `$${totalPedido.toFixed(2)}`;
+        document.getElementById('modalTotal').textContent = totalPedido.toFixed(2);
+
+        // Confirmar datos
+        deliveryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+            const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked');
+            const direccion = document.getElementById('direccion').value.trim();
+
+            if (!nombre || !email || !telefono) {
+                alert('⚠️ Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            if (telefono.length < 10) {
+                alert('⚠️ El teléfono debe tener al menos 10 dígitos');
+                return;
+            }
+
+            if (deliveryMethod.value === 'Domicilio' && !direccion) {
+                alert('⚠️ Por favor ingresa la dirección de entrega');
+                return;
+            }
+
+            datosCliente = {
+                nombre: nombre,
+                email: email,
+                telefono: telefono,
+                direccion: deliveryMethod.value === 'Domicilio' ? direccion : null,
+                metodo_entrega: deliveryMethod.value
+            };
+
+            deliveryForm.style.display = 'none';
+            paymentMethodsContainer.style.display = 'block';
+            
+            messageArea.style.whiteSpace = 'normal';
+            messageArea.style.border = '2px solid #00D4AA';
+            messageArea.style.padding = '15px';
+            messageArea.style.backgroundColor = '#e8f9f4';
+            messageArea.style.color = '#00796b';
+            messageArea.style.borderRadius = '8px';
+            messageArea.innerHTML = `<strong>✅ Datos confirmados.</strong> Ahora selecciona tu método de pago con <strong>Wompi</strong>:`;
+
+            paymentMethodsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // Seleccionar método de pago
+        document.querySelectorAll('.payment-method-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const metodoSeleccionado = this.getAttribute('data-method');
+                
+                document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+
+                if (metodoSeleccionado === 'card') {
+                    cardModal.style.display = 'flex';
+                } else {
+                    let nombreMetodo = '';
+                    switch(metodoSeleccionado) {
+                        case 'nequi': nombreMetodo = 'Nequi'; break;
+                        case 'pse': nombreMetodo = 'PSE'; break;
+                        case 'efectivo': nombreMetodo = 'Efectivo'; break;
+                        case 'transferencia': nombreMetodo = 'Transferencia Bancaria'; break;
+                    }
+                    procesarPago(nombreMetodo);
+                }
+            });
+        });
+
+        // Cerrar modal
+        closeModal.addEventListener('click', () => {
+            cardModal.style.display = 'none';
+        });
+
+        // Formatear tarjeta
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+            document.getElementById('cardNumberDisplay').textContent = formattedValue || '•••• •••• •••• ••••';
+        });
+
+        document.getElementById('cardName').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase().replace(/[^A-Z\s]/g, '');
+            document.getElementById('cardNameDisplay').textContent = e.target.value || 'NOMBRE APELLIDO';
+        });
+
+        document.getElementById('cardExpiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+            document.getElementById('cardExpiryDisplay').textContent = value || 'MM/AA';
+        });
+
+        document.getElementById('cardCvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Pagar con tarjeta
+        cardForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardCvv = document.getElementById('cardCvv').value;
+
+            if (cardNumber.length < 15) {
+                alert('⚠️ Número de tarjeta inválido');
+                return;
+            }
+
+            if (cardCvv.length < 3) {
+                alert('⚠️ CVV inválido');
+                return;
+            }
+
+            cardModal.style.display = 'none';
+            procesarPago('Tarjeta de Crédito/Débito');
+        });
+
+        // PROCESAR PAGO
+        async function procesarPago(metodoPago) {
+            processingOverlay.style.display = 'flex';
+
+            const ventaData = {
+                nombre: datosCliente.nombre,
+                email: datosCliente.email,
+                telefono: datosCliente.telefono,
+                direccion: datosCliente.direccion,
+                metodo_entrega: datosCliente.metodo_entrega,
+                metodo_pago: metodoPago,
+                productos: carrito,
+                total: totalPedido
+            };
+
+            setTimeout(async () => {
+                try {
+                    const response = await fetch(`${API_URL}/ventas/registrar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(ventaData)
+                    });
+
+                    const result = await response.json();
+                    processingOverlay.style.display = 'none';
+
+                    if (result.success) {
+                        mostrarMensajeFinal(metodoPago, result.data);
+                        localStorage.removeItem('papasLocasCarrito');
+                    } else {
+                        throw new Error(result.mensaje || 'Error al procesar el pago');
+                    }
+                } catch (error) {
+                    processingOverlay.style.display = 'none';
+                    console.error('Error:', error);
+                    
+                    messageArea.style.whiteSpace = 'pre-wrap';
+                    messageArea.style.border = '2px solid #ef5350';
+                    messageArea.style.padding = '20px';
+                    messageArea.style.backgroundColor = '#ffebee';
+                    messageArea.style.color = '#c62828';
+                    messageArea.style.borderRadius = '8px';
+                    messageArea.textContent = `❌ ERROR AL REGISTRAR EL PAGO\n\n${error.message}\n\n⚠️ Verifica que el servidor esté corriendo.`;
+                    
+                    paymentMethodsContainer.style.display = 'block';
+                    document.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
+                }
+            }, 2000);
+        }
+
+        // MOSTRAR MENSAJE FINAL
+        function mostrarMensajeFinal(metodoPago, dataVenta) {
+            const resumenProductos = carrito.map(item => 
+                `  • ${item.cantidad}x ${item.nombre} - $${(item.precio * item.cantidad).toFixed(2)}`
+            ).join('\n');
+
+            let datosClienteTexto = `👤 Nombre: ${datosCliente.nombre}
+📧 Email: ${datosCliente.email}
+📱 Teléfono: ${datosCliente.telefono}`;
+
+            if (datosCliente.metodo_entrega === 'Domicilio') {
+                datosClienteTexto += `\n🏠 Dirección: ${datosCliente.direccion}`;
+            }
+
+            const finalMessage = `
+🎉 ¡PEDIDO CONFIRMADO EXITOSAMENTE!
+
+═══════════════════════════════════════════
+
+📋 DATOS DEL CLIENTE:
+${datosClienteTexto}
+
+═══════════════════════════════════════════
+
+🚚 MÉTODO DE RECEPCIÓN:
+${datosCliente.metodo_entrega}
+
+═══════════════════════════════════════════
+
+🛒 RESUMEN DEL PEDIDO:
+${resumenProductos}
+
+💰 TOTAL PAGADO: $${totalPedido.toFixed(2)}
+
+═══════════════════════════════════════════
+
+💳 MÉTODO DE PAGO:
+${metodoPago} (Procesado con Wompi)
+
+═══════════════════════════════════════════
+
+✅ Tu pedido #${dataVenta.id_venta} ha sido registrado exitosamente.
+
+📞 Te contactaremos al ${datosCliente.telefono} para confirmar.
+
+🕐 Fecha: ${new Date().toLocaleString('es-CO')}
+
+¡Gracias por tu compra en Papas Locas! 🟧
+`;
+
+            messageArea.style.whiteSpace = 'pre-wrap';
+            messageArea.style.border = '2px solid #66bb6a';
+            messageArea.style.padding = '20px';
+            messageArea.style.backgroundColor = '#e8f5e9';
+            messageArea.style.color = '#2e7d32';
+            messageArea.style.borderRadius = '8px';
+            messageArea.textContent = finalMessage;
+
+            paymentMethodsContainer.style.display = 'none';
+            messageArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            setTimeout(() => {
+                window.location.href = 'Index.html#menu';
+            }, 10000);
+        }
+    });
+</script>
